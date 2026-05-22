@@ -73,6 +73,13 @@ GET  /api/stats           Event totals and counts by type
 GET  /api/initial_events  Most recent file events
 POST /api/clear           Clear all logged events, JSON request required
 ```
+---
+
+## 🖼️ Screenshots
+
+<img width="1584" height="927" alt="image" src="https://github.com/user-attachments/assets/5e84b5fd-4ebd-4fe5-80a6-ba313ada01e1" />
+
+---
 
 ## Notes
 
