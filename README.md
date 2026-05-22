@@ -1,46 +1,50 @@
 # File Access Logger
 
-File Access Logger is a lightweight Flask dashboard for monitoring file activity in local directories. It detects file creation, modification, and deletion events, stores them in a SQLite database, and displays recent activity in a real-time web dashboard using Flask-SocketIO.
+File Access Logger is a lightweight Flask-based web dashboard for monitoring file activity in local directories. It detects file creation, modification, and deletion events, stores them in a SQLite database, and displays recent activity in real time using Flask-SocketIO.
 
 ## Features
 
-- Real-time browser dashboard for file activity
-- SQLite event storage with SQLAlchemy
-- Configurable monitored directories
-- Event counts for created, modified, and deleted files
-- Recent activity table with file, directory, process, PID, user, and timestamp details
-- Safe exclusion of the app's own SQLite database files from monitoring
+* Real-time browser-based dashboard for monitoring file activity
+* SQLite event storage using SQLAlchemy
+* Configurable directories for monitoring
+* Event counters for created, modified, and deleted files
+* Recent activity table with file path, directory, process, PID, user, and timestamp details
+* Safe exclusion of the application's own SQLite database files from monitoring
 
 ## Project Structure
 
 ```text
 .
 ├── app.py              # Flask application entry point
-├── config.py           # Runtime configuration and monitored directory defaults
-├── models.py           # SQLAlchemy database model and setup
-├── monitor.py          # File scanning, event detection, and logging
+├── config.py           # Runtime configuration and default monitored directories
+├── models.py           # SQLAlchemy database model and database setup
+├── monitor.py          # File scanning, event detection, and event logging
 ├── routes.py           # Dashboard and API routes
 └── requirements.txt    # Python dependencies
 ```
 
 ## Requirements
 
-- Python 3.10 or newer
-- Windows, macOS, or Linux
+* Python 3.10 or newer
+* Windows, macOS, or Linux
 
 ## Installation
+
+Install the required dependencies:
 
 ```powershell
 python -m pip install -r requirements.txt
 ```
 
-## Run
+## Running the Application
+
+Start the application:
 
 ```powershell
 python app.py
 ```
 
-Open the dashboard:
+Open the dashboard in your browser:
 
 ```text
 http://127.0.0.1:5000
@@ -48,9 +52,9 @@ http://127.0.0.1:5000
 
 ## Configuration
 
-By default, the app monitors the current user's `Documents`, `Downloads`, and `Desktop` directories when they exist.
+By default, the application monitors the current user's `Documents`, `Downloads`, and `Desktop` directories, if they exist.
 
-To monitor custom directories, set `FILE_ACCESS_LOGGER_DIRS` before starting the app. On Windows, separate multiple paths with semicolons:
+To monitor custom directories, set the `FILE_ACCESS_LOGGER_DIRS` environment variable before starting the application. On Windows, separate multiple paths with semicolons:
 
 ```powershell
 $env:FILE_ACCESS_LOGGER_DIRS="C:\Path\One;C:\Path\Two"
@@ -61,26 +65,23 @@ Optional environment variables:
 
 ```text
 FILE_ACCESS_LOGGER_DB          SQLite database path
-FILE_ACCESS_LOGGER_HOST        Flask host, default 0.0.0.0
-FILE_ACCESS_LOGGER_PORT        Flask port, default 5000
-FILE_ACCESS_LOGGER_ASYNC_MODE  Socket.IO async mode, default threading
+FILE_ACCESS_LOGGER_HOST        Flask host; default 0.0.0.0
+FILE_ACCESS_LOGGER_PORT        Flask port; default 5000
+FILE_ACCESS_LOGGER_ASYNC_MODE  Socket.IO async mode; default threading
 ```
 
 ## API Endpoints
 
 ```text
-GET  /api/stats           Event totals and counts by type
-GET  /api/initial_events  Most recent file events
-POST /api/clear           Clear all logged events, JSON request required
+GET  /api/stats           Returns event totals and counts by event type
+GET  /api/initial_events  Returns the most recent file events
+POST /api/clear           Clears all logged events; requires a JSON request
 ```
----
 
-## 🖼️ Screenshots
+## Screenshots
 
-<img width="1584" height="927" alt="image" src="https://github.com/user-attachments/assets/5e84b5fd-4ebd-4fe5-80a6-ba313ada01e1" />
-
----
+<img width="1584" height="927" alt="image" src="https://github.com/user-attachments/assets/f608582c-f57b-48ed-86da-42d4d494902f" />
 
 ## Notes
 
-This project uses polling to detect file changes. Very fast create/delete operations between scan intervals may be missed, and process attribution is best-effort.
+This project uses polling to detect file changes. Very fast create/delete operations that occur between scan intervals may be missed. Process attribution is best-effort and may not always identify the exact process responsible for a file event.
