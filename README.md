@@ -1,17 +1,28 @@
-# File Access Logger
+# 📁 File Access Logger
 
-File Access Logger is a lightweight Flask-based web dashboard for monitoring file activity in local directories. It detects file creation, modification, and deletion events, stores them in a SQLite database, and displays recent activity in real time using Flask-SocketIO.
+**File Access Logger** is a lightweight **Flask-based web dashboard** for monitoring file activity in local directories. It detects file **creation**, **modification**, and **deletion** events, stores the logged activity in a **SQLite** database, and displays recent file events in real time using **Flask-SocketIO**.
 
-## Features
+---
 
-* Real-time browser-based dashboard for monitoring file activity
-* SQLite event storage using SQLAlchemy
-* Configurable directories for monitoring
-* Event counters for created, modified, and deleted files
-* Recent activity table with file path, directory, process, PID, user, and timestamp details
-* Safe exclusion of the application's own SQLite database files from monitoring
+## ✨ Features
 
-## Project Structure
+* 📡 **Real-time browser-based dashboard** for monitoring file activity
+* 🗄️ **SQLite event storage** managed with SQLAlchemy
+* ⚙️ **Configurable directory monitoring**
+* 📊 **Event counters** for created, modified, and deleted files
+* 📝 **Recent activity table** displaying:
+
+  * File path
+  * Directory
+  * Process
+  * PID
+  * User
+  * Timestamp
+* 🛡️ **Safe exclusion** of the application’s own SQLite database files from monitoring
+
+---
+
+## 🗂️ Project Structure
 
 ```text
 .
@@ -23,12 +34,16 @@ File Access Logger is a lightweight Flask-based web dashboard for monitoring fil
 └── requirements.txt    # Python dependencies
 ```
 
-## Requirements
+---
 
-* Python 3.10 or newer
+## ✅ Requirements
+
+* Python **3.10** or newer
 * Windows, macOS, or Linux
 
-## Installation
+---
+
+## ⚙️ Installation
 
 Install the required dependencies:
 
@@ -36,7 +51,9 @@ Install the required dependencies:
 python -m pip install -r requirements.txt
 ```
 
-## Running the Application
+---
+
+## ▶️ Running the Application
 
 Start the application:
 
@@ -50,38 +67,50 @@ Open the dashboard in your browser:
 http://127.0.0.1:5000
 ```
 
-## Configuration
+---
 
-By default, the application monitors the current user's `Documents`, `Downloads`, and `Desktop` directories, if they exist.
+## 🛠️ Configuration
 
-To monitor custom directories, set the `FILE_ACCESS_LOGGER_DIRS` environment variable before starting the application. On Windows, separate multiple paths with semicolons:
+By default, the application monitors the current user’s **Documents**, **Downloads**, and **Desktop** directories, if they exist.
+
+To monitor custom directories, set the `FILE_ACCESS_LOGGER_DIRS` environment variable before starting the application.
+
+On Windows, separate multiple directory paths with semicolons:
 
 ```powershell
 $env:FILE_ACCESS_LOGGER_DIRS="C:\Path\One;C:\Path\Two"
 python app.py
 ```
 
-Optional environment variables:
+### Optional Environment Variables
 
-```text
-FILE_ACCESS_LOGGER_DB          SQLite database path
-FILE_ACCESS_LOGGER_HOST        Flask host; default 0.0.0.0
-FILE_ACCESS_LOGGER_PORT        Flask port; default 5000
-FILE_ACCESS_LOGGER_ASYNC_MODE  Socket.IO async mode; default threading
-```
+| Variable                        | Description                                  |
+| ------------------------------- | -------------------------------------------- |
+| `FILE_ACCESS_LOGGER_DB`         | SQLite database path                         |
+| `FILE_ACCESS_LOGGER_HOST`       | Flask host; default is `0.0.0.0`             |
+| `FILE_ACCESS_LOGGER_PORT`       | Flask port; default is `5000`                |
+| `FILE_ACCESS_LOGGER_ASYNC_MODE` | Socket.IO async mode; default is `threading` |
 
-## API Endpoints
+---
 
-```text
-GET  /api/stats           Returns event totals and counts by event type
-GET  /api/initial_events  Returns the most recent file events
-POST /api/clear           Clears all logged events; requires a JSON request
-```
+## 🔌 API Endpoints
 
-## Screenshots
+| Method | Endpoint              | Description                                       |
+| ------ | --------------------- | ------------------------------------------------- |
+| `GET`  | `/api/stats`          | Returns event totals and counts by event type     |
+| `GET`  | `/api/initial_events` | Returns the most recent file events               |
+| `POST` | `/api/clear`          | Clears all logged events; requires a JSON request |
 
-<img width="1584" height="927" alt="image" src="https://github.com/user-attachments/assets/f608582c-f57b-48ed-86da-42d4d494902f" />
+---
 
-## Notes
+## 🖼️ Screenshots
 
-This project uses polling to detect file changes. Very fast create/delete operations that occur between scan intervals may be missed. Process attribution is best-effort and may not always identify the exact process responsible for a file event.
+<img width="1584" height="927" alt="File Access Logger dashboard screenshot" src="https://github.com/user-attachments/assets/f608582c-f57b-48ed-86da-42d4d494902f" />
+
+---
+
+## 📝 Notes
+
+This project uses **polling** to detect file changes. Very fast create/delete operations that occur between scan intervals may be missed.
+
+Process attribution is performed on a **best-effort** basis and may not always identify the exact process responsible for a file event.
