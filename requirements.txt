@@ -1,5 +1,0 @@
-Flask>=2.3,<4
-Flask-SocketIO>=5.3,<6
-SQLAlchemy>=2.0,<3
-psutil>=6.0,<8
-simple-websocket>=1.0,<2
