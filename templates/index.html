@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>File Access Logger</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+</head>
+<body>
+    <!-- Confirmation modal shown before clearing all events -->
+    <div class="modal-overlay" id="confirmModal">
+        <div class="modal">
+            <div class="modal-content">
+                <div class="modal-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                    </svg>
+                </div>
+                <div class="modal-text">
+                    <h3>Clear All Events</h3>
+                    <p>Are you sure you want to clear all logged events? This action cannot be undone and will permanently delete all event history.</p>
+                    <div class="modal-buttons">
+                        <button class="btn btn-cancel" onclick="hideConfirmModal()">Cancel</button>
+                        <button class="btn btn-confirm" onclick="performClear()">Clear All Events</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>File Access Monitor</h1>
+            <div class="subtitle">Real-time file system activity dashboard</div>
+            <div class="status">Live Monitoring Active</div>
+        </div>
+
+        <div class="grid">
+            <div class="card stat-card">
+                <h3>Total Events</h3>
+                <div class="stats">
+                    <p>All Events: <strong id="total-events">0</strong></p>
+                    <p>Last Hour: <strong id="recent-events">0</strong></p>
+                    <p>Last Update: <span id="last-update">Just now</span></p>
+                </div>
+            </div>
+
+            <div class="card stat-card">
+                <h3>Directories</h3>
+                <div style="margin-top:12px">
+                    {% for directory in directories %}
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+                        <div style="width:12px;height:12px;background:{{ directory.color }};border-radius:2px"></div>
+                        <div>{{ directory.path }}</div>
+                    </div>
+                    {% else %}
+                    <div style="color:var(--neutral-text-light)">No directories configured</div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="card stat-card">
+                <h3>Event Types</h3>
+                <div style="margin-top:12px">
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+                        <span>Created</span>
+                        <span class="badge created" id="count-created">0</span>
+                    </div>
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+                        <span>Modified</span>
+                        <span class="badge modified" id="count-modified">0</span>
+                    </div>
+                    <div style="display:flex;align-items:center;justify-content:space-between">
+                        <span>Deleted</span>
+                        <span class="badge deleted" id="count-deleted">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card stat-card">
+                <h3>Actions</h3>
+                <div style="margin-top:20px">
+                    <button class="btn btn-danger" onclick="showConfirmModal()" id="clear-btn">Clear All Events</button>
+                </div>
+                <div class="real-time-indicator">
+                    <div class="indicator"></div>
+                    <div>Real-time updates active</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card main-card">
+            <h3>Recent File Activity</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Event Type</th>
+                        <th>File Name</th>
+                        <th>Directory</th>
+                        <th>Process (PID)</th>
+                        <th>User</th>
+                    </tr>
+                </thead>
+                <tbody id="events-body">
+                    <tr><td colspan="6" class="empty-state">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19.5 21a3 3 0 0 0 3-3v-4.5a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3V18a3 3 0 0 0 3 3h15ZM1.5 10.146V6a3 3 0 0 1 3-3h5.379a2.25 2.25 0 0 1 1.59.659l2.122 2.121c.14.141.331.22.53.22H19.5a3 3 0 0 1 3 3v1.146A4.483 4.483 0 0 0 19.5 9h-15a4.483 4.483 0 0 0-3 1.146Z"/>
+                        </svg>
+                        <div>Waiting for file activity...</div>
+                        <div style="font-size:14px;margin-top:8px">File events will appear here automatically</div>
+                    </td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script src="{{ url_for('static', filename='dashboard.js') }}"></script>
+</body>
+</html>
